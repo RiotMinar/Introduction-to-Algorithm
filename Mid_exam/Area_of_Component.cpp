@@ -1,0 +1,56 @@
+#include <bits/stdc++.h>
+using namespace std;
+char x[1005][1005];
+bool val[1005][1005];
+int n,m;
+vector<pair<int,int>> y={{-1,0},{1,0},{0,-1},{0,1}};
+bool valid(int i,int j)
+{
+    if(i<0 || i>=n || j<0 || j>=m)return false;
+    else return true;
+}
+int cnt=0;
+void bfs(int si,int sj)
+{
+    cnt++;
+    val[si][sj]=true;
+    int ci,cj;
+    for(int i=0;i<4;i++)
+    {
+        ci=si+y[i].first;
+        cj=sj+y[i].second;
+        if(valid(ci,cj) && x[ci][cj]!='-' && !val[ci][cj])
+        {
+            bfs(ci,cj);
+        }
+    }
+}
+int main()
+{
+    vector<int> p;
+    memset(val,false,sizeof(val));
+    cin>>n>>m;
+    for(int i=0;i<n;i++)
+        for(int j=0;j<m;j++)
+            {
+                cin>>x[i][j];
+                if(x[i][j]=='-')val[i][j]=true; 
+            }
+    for(int i=0;i<n;i++)
+    {
+        for(int j=0;j<m;j++)
+        {
+            if(!val[i][j] && x[i][j]!='-' )
+            {
+                bfs(i,j);
+                p.push_back(cnt);
+                cnt=0;
+            }
+            
+        }
+    }
+    sort(p.begin(),p.end());
+    if(p.empty())cout<<-1;
+    else cout<<p[0];
+    return 0;
+}
